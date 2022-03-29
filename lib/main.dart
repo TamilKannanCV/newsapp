@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/screens/main_screen.dart';
+import 'package:newsapp/screens/home_screen.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
-      home: MainScreen(),
+    MaterialApp(
+      home: HomeScreen(),
     ),
   );
 }
