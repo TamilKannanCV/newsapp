@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:error_message/error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:newsapp/models/article.dart';
 import 'package:newsapp/services/api_service.dart';
@@ -11,29 +15,57 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late ScrollController _scrollController;
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        // log("message");
+        // ApiService.instance.fetchNews();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "News App",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.white,
+        title: const Text("NewsApp"),
       ),
       body: FutureBuilder(
-        future: ApiService().fetchNews(),
+        future: ApiService.instance.fetchNews(),
         builder: (context, AsyncSnapshot<List<Article>?> snapshot) {
-          if (snapshot.data == null) {
-            return const Center(child: Text("No data fetched"));
+          if (snapshot.hasError) {
+            return const Center(
+                child: ErrorMessage(
+              title: "Unable to fetch news",
+              icon: Icon(Icons.error),
+            ));
+          }
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator.adaptive());
           }
           final data = snapshot.data;
-          return ListView.builder(
-            itemBuilder: ((context, index) => ListItem(data![index])),
-            itemCount: data?.length,
+          return SingleChildScrollView(
+            controller: _scrollController,
+            child: Container(
+              width: double.maxFinite,
+              padding: const EdgeInsets.all(10.0),
+              child: Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                spacing: 10.0,
+                runSpacing: 10.0,
+                children: data!
+                    .where((e) => e.imageUrl != null)
+                    .map(
+                      (e) => Hero(tag: "${e.title}", child: ListItem(e)),
+                    )
+                    .toList(),
+              ),
+            ),
           );
         },
       ),

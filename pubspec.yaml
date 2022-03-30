@@ -13,13 +13,29 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   http: ^0.13.4
+  webview_flutter: ^3.0.1
+  webview_windows: ^0.1.6
+  error_message: 
+    git: https://github.com/TamilKannanCV/error_message.git
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^1.0.0
+  change_app_package_name: ^1.0.0
+  flutter_native_splash: ^2.1.2+1
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: true
+  image: assets/images/logo.png
+  color: "#FFFFFF"
+  color_dark: "#1B1B1B"
+
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
