@@ -34,6 +34,49 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("NewsApp"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Contact Us"),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text("If you have any queries to reach us at"),
+                        const SizedBox(height: 10.0),
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.mail_outline,
+                              size: 20.0,
+                            ),
+                            SizedBox(width: 5.0),
+                            Text("tamilkannan.contact@gmail.com"),
+                          ],
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("OK"))
+                    ],
+                  ),
+                );
+              },
+              icon: const Icon(Icons.contact_support)),
+        ],
       ),
       body: FutureBuilder(
         future: ApiService.instance.fetchNews(),
