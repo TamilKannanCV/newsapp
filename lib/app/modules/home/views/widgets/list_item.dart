@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/animations/fade_page_route.dart';
-import 'package:newsapp/models/article.dart';
-import 'package:newsapp/screens/news_screen.dart';
+import 'package:newsapp/app/data/models/article.dart';
 
 class ListItem extends StatefulWidget {
-  const ListItem(this.article, {Key? key}) : super(key: key);
+  const ListItem(this.article, {Key? key, this.onTap}) : super(key: key);
   final Article article;
+  final VoidCallback? onTap;
 
   @override
   State<ListItem> createState() => _ListItemState();
@@ -22,8 +21,7 @@ class _ListItemState extends State<ListItem> with TickerProviderStateMixin {
       child: Container(
         width: (MediaQuery.of(context).size.width < 500.0) ? 400.0 : 300.0,
         height: 250.0,
-        decoration: BoxDecoration(
-            border: Border.all(), borderRadius: BorderRadius.circular(15.0)),
+        decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(15.0)),
         child: MouseRegion(
           onEnter: (_) {
             onMouseEvent(true);
@@ -35,12 +33,7 @@ class _ListItemState extends State<ListItem> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(15.0),
             child: InkWell(
               borderRadius: BorderRadius.circular(15.0),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  FadePageRoute(NewsScreen(widget.article)),
-                );
-              },
+              onTap: widget.onTap,
               child: Stack(
                 children: [
                   Positioned.fill(
@@ -51,9 +44,7 @@ class _ListItemState extends State<ListItem> with TickerProviderStateMixin {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Theme.of(context).brightness == Brightness.dark
-                                ? Colors.black
-                                : Colors.white,
+                            Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                           ],
                         ),
                       ),
@@ -62,7 +53,7 @@ class _ListItemState extends State<ListItem> with TickerProviderStateMixin {
                         duration: const Duration(milliseconds: 200),
                         curve: Curves.linear,
                         child: Image.network(
-                          widget.article.imageUrl ?? '',
+                          "https://corsproxy.io?${widget.article.imageUrl}",
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return const Center(

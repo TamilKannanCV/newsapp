@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:newsapp/screens/home_screen.dart';
+
+import 'package:get/get.dart';
+
+import 'app/routes/app_pages.dart';
 
 void main() {
   runApp(
-    MaterialApp(
+    GetMaterialApp(
+      title: "GxNewsApp",
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
@@ -27,7 +33,6 @@ void main() {
         ),
       ),
       themeMode: ThemeMode.system,
-      home: const HomeScreen(),
     ),
   );
 }
